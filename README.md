@@ -3,14 +3,13 @@
 ## Overview
 
 # UGREEN DXP4800+ Thermal Optimization & Fan Curve Tuning
-Fix high drive temperatures (55–60°C) on the UGREEN DXP4800+ NAS by tuning BIOS SmartFan curves for TrueNAS deployments using Seagate EXOS drives.
-This guide provides reproducible results for reducing temperatures to ~43–52°C while maintaining low noise.
+Fix high drive temperatures (55–60°C) on the UGREEN DXP4800+ NAS by tuning BIOS SmartFan curves for TrueNAS deployments using Seagate EXOS drives. This guide provides reproducible results for reducing temperatures to ~43–52°C while maintaining low noise.
 
 The following documents the process of optimizing thermals and fan behavior on the **UGREEN DXP4800+ NAS** using AMI Aptio BIOS SmartFan controls when using 4 Seagate EXOS 18TB (ST18000NM003D) enterprise drives. I absolutely love these drives, but they run warm in my current setup. Additionally, the default AMI BIOS settings were of no help and resulted in
 
 - Fan never engaging or very late ramping
 - One drive consitently reaching **~60°C**  
-- Others sitting around **~50°C**  
+- Other drive temperatures sitting around **~50°C**  
 
 ## Tuning Approach
 
@@ -44,14 +43,11 @@ Arrive at a fan curve that -
 ## Key Insight
 
 > Cooling capacity was never the issue — fan curve behavior was.
-
-With fans set to "full on" speed drive temperatures stabilized at **43–49°C**
+With SYS fan speed set to "full on" speed drive temperatures stabilized at **43–49°C**
 
 This confirmed:
 - Airflow is sufficient  
 - Proper tuning is the real solution  
-
-bearing in mind
 
 ## Target Temperature Range
 
@@ -154,9 +150,8 @@ flowchart LR
 ## Key Takeaways
 
 - Avoid running SYS fan at "full on" mode
-- Avoid high start PWM - drives will always be theri coolest, but it will be noisy.
+- Avoid high start PWM - drives will always be their coolest, but fan will be noisy.
 - Low slope **will** result in slow thermal response
-- SYS fan BIOS setting effects disk cooling - don't obsess w/ CPU fan settings
 - Prevent heat buildup instead of reacting to it  
 - Small PWM changes have large real-world effects  
 - Airflow design matters as much as fan curve
@@ -171,8 +166,6 @@ Inspired by: https://github.com/andrewle8/ugreen-dxp4800-thermal-fix
 
 ## About
 
-I work extensively with infrastructure, cloud, cybersecurity, networking, and systems design, and maintain a strong interest in practical, real-world hardware optimization.
-This repository is part of a broader effort to document and share reproducible improvements for homelab and prosumer environments.
-
+I work extensively with infrastructure, cloud, cybersecurity, networking, and systems design, and maintain a strong interest in practical, real-world hardware optimization.  This repository is part of a broader effort to document and share reproducible improvements for homelab and prosumer environments.
 
 ## Disclaimer - Use this information at your own risk and always monitor temperatures after applying changes.
