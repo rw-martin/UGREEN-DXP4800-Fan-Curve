@@ -1,0 +1,1 @@
+# UGREEN-DXP4800-Fan-Curve
