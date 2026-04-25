@@ -1,8 +1,6 @@
-# UGREEN DXP4800+ Thermal Fan Curve
+# UGREEN DXP4800+ Thermal Optimization & Fan Curve Tuning
 
 ## Overview
-
-# UGREEN DXP4800+ Thermal Optimization & Fan Curve Tuning
 Fix high drive temperatures (55–60°C) on the UGREEN DXP4800+ NAS by tuning BIOS SmartFan curves for TrueNAS deployments using Seagate EXOS drives. This guide provides reproducible results for reducing temperatures to ~43–52°C while maintaining low noise.
 
 The following documents the process of optimizing thermals and fan behavior on the **UGREEN DXP4800+ NAS** using AMI Aptio BIOS SmartFan controls when using 4 Seagate EXOS 18TB (ST18000NM003D) enterprise drives. I absolutely love these drives, but they run warm in my current setup. Additionally, the default AMI BIOS settings were of no help and resulted in
