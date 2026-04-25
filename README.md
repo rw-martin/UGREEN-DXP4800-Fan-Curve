@@ -1,21 +1,34 @@
-# UGREEN DXP4800+ Thermal Optimization & Fan Curve Tuning
+# UGREEN DXP4800+ Thermal Fan Curve
 
 ## Overview
 
-This repository documents the process of optimizing thermals and fan behavior on the **UGREEN DXP4800+ NAS** using AMI Aptio BIOS SmartFan controls and 4 Seagate EXOS 18TB (ST18000NM003D) enterprise drives.  These drives run warm
-as it stands; however, the default BIOS settings were of no help as the fan never kicked in and allowed drive temperatures to float into the 55-60C range which is not ideal.  This resulted in
+# UGREEN DXP4800+ Thermal Optimization & Fan Curve Tuning
+Fix high drive temperatures (55–60°C) on the UGREEN DXP4800+ NAS by tuning BIOS SmartFan curves for TrueNAS deployments using Seagate EXOS drives.
+This guide provides reproducible results for reducing temperatures to ~43–52°C while maintaining low noise.
 
-- One drive reaching **~60°C**  
+The following documents the process of optimizing thermals and fan behavior on the **UGREEN DXP4800+ NAS** using AMI Aptio BIOS SmartFan controls when using 4 Seagate EXOS 18TB (ST18000NM003D) enterprise drives. I absolutely love these drives, but they run warm in my current setup. Additionally, the default AMI BIOS settings were of no help and resulted in
+
+- Fan never engaging or very late ramping
+- One drive consitently reaching **~60°C**  
 - Others sitting around **~50°C**  
-- Very late fan ramping  
+
+## Tuning Approach
+
+All results are based on:
+
+- Controlled ambient environment (~28–32°C)
+- Identical enterprise drives across all bays
+- BIOS-level fan control (no OS interference)
+- Repeatable measurement using SMART telemetry
 
 ### Objective
 Arrive at a fan curve that -
 
-- 🔇 ensures the fan is barely audible at idle  
-- 🌡️ maintains safe HDD temperatures under load  
+- 🔇 Ensures the fan is barely audible at idle  
+- 🌡️ Maintains safe HDD temperatures under load  
 - ⚖️ Balances airflow across drive bays  
-- 🚫 Avoid constant "full on" fan noise  
+- 🚫 Avoid constant "full on" fan noise
+- 🔁 Reproducible results tjat are useful for NAS deployments
 
 ---
 
@@ -32,8 +45,7 @@ Arrive at a fan curve that -
 
 > Cooling capacity was never the issue — fan curve behavior was.
 
-With fans set to "full on" speed:
-- Drives stabilized at **43–49°C**
+With fans set to "full on" speed drive temperatures stabilized at **43–49°C**
 
 This confirmed:
 - Airflow is sufficient  
@@ -55,7 +67,7 @@ bearing in mind
 
 ## Final Fan Curve (Balanced Profile)
 
-### SYS Fan settings
+### SYS Fan BIOS settings
 
 ```
 PWM Slope: 55
@@ -139,58 +151,28 @@ flowchart LR
 
 ---
 
-## Thermal Monitoring Script results
-
-
-System Thermal Report - 2026-04-25 22:14:31
-================================================================================
-BAY  DEV      MODEL                SERIAL         TEMP   STATE 
---------------------------------------------------------------------------------
-2    /dev/sdb ST18000NM003D-3DL103 ZVTB17XX       53°C   WARM  
-4    /dev/sdd ST18000NM003D-3DL103 ZVTBS8XX       48°C   OK    
-3    /dev/sdc ST18000NM003D-3DL103 ZVTBSAXX       48°C   OK    
-1    /dev/sda ST18000NM003D-3DL103 ZX3006XX       46°C   OK    
---------------------------------------------------------------------------------
-Summary:
-  Max Disk Temp : 53°C
-  Min Disk Temp : 46°C
-  Avg Disk Temp : 48.8°C
-  Delta         : 7°C
-================================================================================
-
-## Notes on Temperature Delta*****
-
-A 7–9°C delta between drives is acceptable and typically caused by:
-
-- Airflow path  
-- Drive bay arrangement  
-- Internal chassis layout  
-
----
-
-## Common Mistakes
-
-- Setting full speed temp too low (constant fan spikes)  
-- High start PWM (always noisy)  
-- Low slope (slow thermal response)  
-- Over-focusing on CPU fan BIOS settings instead of SYS fan settings 
-
----
-
 ## Key Takeaways
 
-- SYS fan BIOS setting effects disk cooling  
+- Avoid running SYS fan at "full on" mode
+- Avoid high start PWM - drives will always be theri coolest, but it will be noisy.
+- Low slope **will** result in slow thermal response
+- SYS fan BIOS setting effects disk cooling - don't obsess w/ CPU fan settings
 - Prevent heat buildup instead of reacting to it  
 - Small PWM changes have large real-world effects  
 - Airflow design matters as much as fan curve
-- Remember to check fan shroud; clear dust and remove residual packing materials if present - :)
+- Remember to check fan shroud and to clear dust **and** remove residual packing materials if present - :)
 
 ---
 
 ## Credits
-
 Inspired by: https://github.com/andrewle8/ugreen-dxp4800-thermal-fix
 
 ---
+
+## About
+
+I work extensively with infrastructure, cloud, cybersecurity, networking, and systems design, and maintain a strong interest in practical, real-world hardware optimization.
+This repository is part of a broader effort to document and share reproducible improvements for homelab and prosumer environments.
+
 
 ## Disclaimer - Use this information at your own risk and always monitor temperatures after applying changes.
