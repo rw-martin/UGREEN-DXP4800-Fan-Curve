@@ -1,5 +1,3 @@
-# UGREEN-DXP4800-Fan-Curve
-
 # UGREEN DXP4800+ Thermal Optimization & Fan Curve Tuning
 
 ## Overview
@@ -11,14 +9,14 @@ This repository documents the process of optimizing thermals and fan behavior on
 - 🔇 Barely audible at idle  
 - 🌡️ Safe HDD temperatures under load  
 - ⚖️ Balanced airflow across drive bays  
-- 🚫 Avoid constant full-speed fan noise  
+- 🚫 Avoid constant "full on" fan noise  
 
 ---
 
 ## Hardware
 
 - **NAS**: UGREEN DXP4800+  
-- **Drives**: 4x Seagate EXOS 18TB (ST18000NM003D)  
+- **Drives**: 4 x Seagate EXOS 18TB (ST18000NM003D)  
 - **OS**: TrueNAS SCALE 25.10.3 - Goldeye  
 - **Ambient**: ~28–32°C (tropical environment)  
 
@@ -159,26 +157,24 @@ flowchart LR
 
 ---
 
-## Thermal Monitoring Script
+## Thermal Monitoring Script results
 
-```bash
-#!/bin/bash
 
-echo "System Thermal Report - $(date)"
-echo "============================================================"
-
-for d in /dev/sd?; do
-    model=$(smartctl -i $d | grep "Device Model" | cut -d: -f2 | xargs)
-    serial=$(smartctl -i $d | grep "Serial Number" | cut -d: -f2 | xargs)
-    temp=$(smartctl -A $d | grep -i temperature | awk '{print $10}')
-
-    printf "%-8s %-20s %-15s %s°C\n" "$d" "$model" "$serial" "$temp"
-done
-
-echo "============================================================"
-```
-
----
+System Thermal Report - 2026-04-25 22:14:31
+================================================================================
+BAY  DEV      MODEL                SERIAL         TEMP   STATE 
+--------------------------------------------------------------------------------
+2    /dev/sdb ST18000NM003D-3DL103 ZVTB17XX       53°C   WARM  
+4    /dev/sdd ST18000NM003D-3DL103 ZVTBS8XX       48°C   OK    
+3    /dev/sdc ST18000NM003D-3DL103 ZVTBSAXX       48°C   OK    
+1    /dev/sda ST18000NM003D-3DL103 ZX3006XX       46°C   OK    
+--------------------------------------------------------------------------------
+Summary:
+  Max Disk Temp : 53°C
+  Min Disk Temp : 46°C
+  Avg Disk Temp : 48.8°C
+  Delta         : 7°C
+================================================================================
 
 ## Notes on Temperature Delta
 
@@ -214,11 +210,8 @@ Optional:
 
 ## Credits
 
-Inspired by community findings:  
-https://github.com/andrewle8/ugreen-dxp4800-thermal-fix
+Inspired by: https://github.com/andrewle8/ugreen-dxp4800-thermal-fix
 
 ---
 
-## Disclaimer
-
-Use at your own risk. Always monitor temperatures after applying changes.
+## Disclaimer - Use this information at your own risk and always monitor temperatures after applying changes.
