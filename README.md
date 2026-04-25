@@ -2,13 +2,19 @@
 
 ## Overview
 
-This repository documents the process of optimizing thermals and fan behavior on the **UGREEN DXP4800+ NAS** using AMI Aptio BIOS SmartFan controls and 4 Seagate EXOS 18TB (ST18000NM003D) enterprise drives.
+This repository documents the process of optimizing thermals and fan behavior on the **UGREEN DXP4800+ NAS** using AMI Aptio BIOS SmartFan controls and 4 Seagate EXOS 18TB (ST18000NM003D) enterprise drives.  These drives run warm
+as it stands; however, the default BIOS settings were of no help as the fan never kicked in and allowed drive temperatures to float into the 55-60C range which is not ideal.  This resulted in
 
-### Goals
+- One drive reaching **~60°C**  
+- Others sitting around **~50°C**  
+- Very late fan ramping  
 
-- 🔇 Barely audible at idle  
-- 🌡️ Safe HDD temperatures under load  
-- ⚖️ Balanced airflow across drive bays  
+### Objective
+Arrive at a fan curve that -
+
+- 🔇 ensures the fan is barely audible at idle  
+- 🌡️ maintains safe HDD temperatures under load  
+- ⚖️ Balances airflow across drive bays  
 - 🚫 Avoid constant "full on" fan noise  
 
 ---
@@ -22,29 +28,18 @@ This repository documents the process of optimizing thermals and fan behavior on
 
 ---
 
-## Problem
-
-Default fan behavior resulted in:
-
-- One drive reaching **~60°C**  
-- Others sitting around **~50°C**  
-- Late fan ramping  
-- Excessive noise (full fan used initially to establish baseline)  
-
----
-
 ## Key Insight
 
 > Cooling capacity was never the issue — fan curve behavior was.
 
-With fans set to full speed:
+With fans set to "full on" speed:
 - Drives stabilized at **43–49°C**
 
 This confirmed:
 - Airflow is sufficient  
 - Proper tuning is the real solution  
 
----
+bearing in mind
 
 ## Target Temperature Range
 
@@ -60,7 +55,7 @@ This confirmed:
 
 ## Final Fan Curve (Balanced Profile)
 
-### SYS Fan (Rear / Chassis)
+### SYS Fan settings
 
 ```
 PWM Slope: 55
@@ -68,19 +63,6 @@ Start PWM: 40–42
 Start Temp: 30°C
 Full Speed Temp: 65°C
 Extra Temp: 58°C
-Extra Slope: 80
-```
-
----
-
-### CPU Fan
-
-```
-PWM Slope: 35
-Start PWM: 30–35
-Start Temp: 40°C
-Full Speed Temp: 75°C
-Extra Temp: 60°C
 Extra Slope: 80
 ```
 
@@ -176,17 +158,13 @@ Summary:
   Delta         : 7°C
 ================================================================================
 
-## Notes on Temperature Delta
+## Notes on Temperature Delta*****
 
-A 7–9°C delta between drives is normal and typically caused by:
+A 7–9°C delta between drives is acceptable and typically caused by:
 
 - Airflow path  
-- Drive bay placement  
+- Drive bay arrangement  
 - Internal chassis layout  
-
-Optional:
-- Swap drives to confirm behavior  
-- Place less critical disks in hotter bays  
 
 ---
 
@@ -195,16 +173,17 @@ Optional:
 - Setting full speed temp too low (constant fan spikes)  
 - High start PWM (always noisy)  
 - Low slope (slow thermal response)  
-- Over-focusing on CPU fan instead of SYS fan  
+- Over-focusing on CPU fan BIOS settings instead of SYS fan settings 
 
 ---
 
 ## Key Takeaways
 
-- SYS fan controls disk cooling  
+- SYS fan BIOS setting effects disk cooling  
 - Prevent heat buildup instead of reacting to it  
 - Small PWM changes have large real-world effects  
-- Airflow design matters as much as fan curve  
+- Airflow design matters as much as fan curve
+- Remember to check fan shroud; clear dust and remove residual packing materials if present - :)
 
 ---
 
