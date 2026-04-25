@@ -61,7 +61,7 @@ This confirmed:
 
 ## Final Fan Curve (Balanced Profile)
 
-### SYS Fan BIOS settings
+### SYS SmartFan1 BIOS settings
 
 ```
 PWM Slope: 55
